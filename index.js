@@ -1,25 +1,24 @@
 //DEPENDENCIES
 const mongoose = require('mongoose')
 const express = require('express')
-const methodOverride = require('method-override')
 
 //CONFIGURATIONS
+const PORT = process.env.PORT
 const app = express()
-// require('dotenv').config()
+require('dotenv').config()
 
 //MONGO CONNECTION
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true, 
-    useUnifiedTopology: true},
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true},
     () => { console.log('connected to mongo: ', process.env.MONGO_URI)}
 )
 
 //MIDDLEWARE
 app.use(express.json())
-app.use('/books', require('./controllers/book-controller'))
+const booksController = require('./controllers/book-controller.js')
+app.use('/books', booksController)
 
 //ROUTES
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
     res.send('Home')
 })
 
@@ -27,4 +26,4 @@ app.get('*', (req, res) => {
     res.status(404).render('error404')
 })
 
-app.listen(process.env.PORT)
+app.listen(PORT)
