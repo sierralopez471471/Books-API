@@ -1,6 +1,9 @@
 {
   "name": "books-api",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.14.2"
+  },
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -65,7 +68,7 @@
     "vary": "^1.1.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
