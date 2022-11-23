@@ -2,11 +2,13 @@ const express = require('express')
 const books = express.Router()
 const Book = require('../models/book.js')
 
+module.exports = books
 
 //ROUTES
 //seed route
 books.get('/seed', (req, res) => {
-    Book.insertMany([{
+    Book.insertMany([
+      {
         "title": "The Shinobi Initiative",
         "description": "The reality-bending adventures of a clandestine service agency in the year 2166",
         "year": 2014,
@@ -46,7 +48,7 @@ books.get('/seed', (req, res) => {
 books.get('/', (req, res) => {
     Book.find()
     .then(foundBooks => {
-        res.status(200).json(foundBooks)
+        res.json(foundBooks)
     })
     .catch(err => {
         console.log(err)
@@ -58,7 +60,7 @@ books.get('/', (req, res) => {
 books.get('/:id', (req, res) => {
     Book.findById(req.params.id)
     .then(foundBooks => {
-        res.status(200).json(foundBooks)
+        res.json(foundBooks)
     })
     .catch(err => {
         console.log(err)
@@ -67,39 +69,37 @@ books.get('/:id', (req, res) => {
 })
 
 //update book
-// books.put('/books/:id', (req, res) => {
-//     Book.findByIdAndUpdate(req.params.id, req.body)
-//     .then(() => {
-//         res.status(200).json({books})
-//     })
-//     .catch(err => {
-//         console.log(err)
-//         res.status(404).json({error: 'error404'})
-//     })
-// })
+books.put('/:id', (req, res) => {
+    Book.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => {
+        res.json(req.body)
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(404).json({error: 'error404'})
+    })
+})
 
 // //delete book
-// books.delete('/books/:id', (req, res) => {
-//     Book.findByIdAndDelete(req.params.id)
-//     .then(() => {
-//         res.status(200).json({message: 'deletion success'})
-//     })
-//     .catch(err => {
-//         console.log(err)
-//         res.status(404).json({error: 'error404'})
-//     })
-// })
+books.delete('/:id', (req, res) => {
+    Book.findByIdAndDelete(req.params.id)
+    .then(() => {
+        res.status(200).json({message: 'deletion success'})
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(404).json({error: 'error404'})
+    })
+})
 
-// //add book
-// books.post('/books', (req, res) => {
-//     Book.create(req.body)
-//     .then(() => {
-//         res.status(200).json({books})
-//     })
-//     .catch(err => {
-//         console.log(err)
-//         res.status(404).json({error: 'error404'})
-//     })
-// })
-
-module.exports = books
+//add book
+books.post('/', (req, res) => {
+    Book.create(req.body)
+    .then(() => {
+        res.status(200).json(req.body)
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(404).json({error: 'error404'})
+    })
+})

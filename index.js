@@ -3,17 +3,18 @@ const mongoose = require('mongoose')
 const express = require('express')
 
 //CONFIGURATIONS
+require('dotenv').config()
 const PORT = process.env.PORT
 const app = express()
-require('dotenv').config()
 
 //MONGO CONNECTION
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true},
-    () => { console.log('connected to mongo: ', process.env.MONGO_URI)}
+    () => { console.log('connected to: ', process.env.MONGO_URI)}
 )
 
 //MIDDLEWARE
 app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 const booksController = require('./controllers/book-controller.js')
 app.use('/books', booksController)
 
